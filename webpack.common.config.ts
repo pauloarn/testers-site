@@ -27,6 +27,7 @@ const config = (env: 'development' | 'production'): webpack.Configuration => {
             loader: 'babel-loader',
             options: {
               cacheCompression: false,
+              skipEnvCheck: true,
               cacheDirectory: true,
               babelrc: false,
               presets: [
