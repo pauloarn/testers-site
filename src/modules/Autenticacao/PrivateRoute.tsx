@@ -16,9 +16,7 @@ const PrivateRoute = ({ children }: PropsWithChildren<any>) => (
       }
 
       if (!auth.isAuthenticated) {
-        return (
-          <Navigate to={`${config.authRoute}${getPreviousPage()}`} replace />
-        )
+        return <Navigate to={`${config.authRoute}${getPreviousPage()}`} replace />
       }
 
       return children
