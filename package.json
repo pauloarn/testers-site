@@ -23,9 +23,7 @@
     "react-hook-form": "~7.40.0",
     "react-icons": "^4.7.1",
     "react-redux": "^8.0.5",
-    "react-router-dom": "~6.4.4"
-  },
-  "devDependencies": {
+    "react-router-dom": "~6.4.4",
     "@babel/core": "7.20.5",
     "@babel/plugin-proposal-class-properties": "7.17.12",
     "@babel/plugin-proposal-object-rest-spread": "7.18.0",
