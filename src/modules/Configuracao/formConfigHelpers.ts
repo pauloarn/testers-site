@@ -30,7 +30,7 @@ export const checkBoxes: CheckBoxesValues[] = [
     id: '8955d1b7-ab61-4983-a69e-2d88a378a88f'
   },
   {
-    label: '- Eu aceito compartilhar meus dados pessoais com a plataforma Vagas já!',
+    label: '- Eu aceito compartilhar meus dados pessoas com a plataforma Vagas já!',
     field: 'aceitoCompartilharDados',
     id: '6906861e-f12a-4859-976e-dc4e764b94a6'
   },
@@ -82,8 +82,7 @@ export const getOptionEstadoCivil = (option: EstadoCivilEnum) => {
 }
 
 export const formataEstados = () => {
-  const estadosLista = estados.map((estado) => estado.sigla)
-  return estadosLista
+  return estados.map((estado) => estado.sigla)
 }
 
 export const getOptionEstados = (option: string) => {

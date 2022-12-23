@@ -9,7 +9,7 @@ export const loginRoute = makeRoute('/session', (server) => {
       email: data.login,
       password: data.password
     })
-    console.log({ user })
+
     if (user) {
       const { name, email } = user
       return success({

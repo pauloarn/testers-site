@@ -30,7 +30,6 @@ const config: Configuration = merge(webpackCommonConfig('development'), {
   plugins: [new ReactRefreshWebpackPlugin({ overlay: false })],
   devtool: 'cheap-module-source-map',
   devServer: {
-    allowedHosts: "all",
     static: {
       publicPath: '/',
       directory: join(__dirname, 'build')

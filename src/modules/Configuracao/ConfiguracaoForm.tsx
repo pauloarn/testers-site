@@ -1,4 +1,4 @@
-import { Button, Grid } from '@mui/material'
+import { Grid, Stack } from '@mui/material'
 import {
   FormAutoComplete,
   FormCheckBox,
@@ -24,6 +24,8 @@ import {
 } from './formConfigHelpers'
 import { Path } from 'react-hook-form'
 import IconPoliticaPrivacidade from './IconPoliticaPrivacidade'
+import { useSnackbar } from 'plc-shared/hooks'
+import { CustomButton } from 'plc-shared/components/input'
 
 export interface CheckBoxesValues {
   label: string
@@ -34,7 +36,9 @@ export interface CheckBoxesValues {
 interface ConfiguracaoFormProps {
   handleError: () => void
 }
+
 const ConfiguracaoForm = ({ handleError }: ConfiguracaoFormProps) => {
+  const { snackError } = useSnackbar()
   const { control, watch, setValue, submit } = useFormConfig()
 
   const [cidades, setCidades] = useState<string[]>([])
@@ -44,6 +48,14 @@ const ConfiguracaoForm = ({ handleError }: ConfiguracaoFormProps) => {
   const observaEmail = watch('aceitaReceberEmail')
   const observaDados = watch('aceitoCompartilharDados')
   const observaPrivacidade = watch('aceitarTermosDePrivacidade')
+  const tipoVaga = watch('tipoVaga')
+  const observaSexo = watch('sexo')
+
+  useEffect(() => {
+    if (tipoVaga && tipoVaga.length >= 3) {
+      snackError('Error')
+    }
+  }, [tipoVaga])
 
   useEffect(() => {
     if (observaSms) {
@@ -94,34 +106,16 @@ const ConfiguracaoForm = ({ handleError }: ConfiguracaoFormProps) => {
     }
   }, [estadoState])
 
-  const observaSexo = watch('sexo')
-
   useEffect(() => {
     setValue('sexo', undefined)
   }, [observaSexo])
 
-  const getCheckboxLabel = (checkBox: CheckBoxesValues) => {
-    if (checkBox.field === 'aceitarTermosDePrivacidade') {
-      return (
-        <IconPoliticaPrivacidade
-          checkbox={checkBox}
-          handleRejeitaPoliticas={() => setValue('aceitarTermosDePrivacidade', false)}
-          handleAcceptPoliticas={() => setValue('aceitarTermosDePrivacidade', true)}
-        />
-      )
-    }
-    return checkBox.label
+  const onClickCancelar = () => {
+    snackError('ERROR 500')
   }
 
   return (
-    <Grid
-      container
-      item
-      spacing={2}
-      rowSpacing={2}
-      component={'form'}
-      onSubmit={submit(handleError)}
-    >
+    <Grid container item columnGap={2} rowGap={2} component={'form'} onSubmit={submit(handleError)}>
       <Grid container item spacing={2}>
         <Grid item xs={6}>
           <FormTextField
@@ -130,6 +124,7 @@ const ConfiguracaoForm = ({ handleError }: ConfiguracaoFormProps) => {
             control={control}
             label={'Nome completo'}
             name={'nomeCompleto'}
+            fieldLimit={30}
           />
         </Grid>
         <Grid item xs={3}>
@@ -271,7 +266,7 @@ const ConfiguracaoForm = ({ handleError }: ConfiguracaoFormProps) => {
               }}
               notSelectedLabel={'Não'}
               title={'Desejo receber apenas vagas para esta cidade?'}
-              name={'isWpp'}
+              name={'vagasSomenteCidadeSelecionada'}
               control={control}
             />
           </Grid>
@@ -304,7 +299,7 @@ const ConfiguracaoForm = ({ handleError }: ConfiguracaoFormProps) => {
           <FormAutoComplete
             id={'6e1ff640-ae9e-4f58-b77b-06e31acad39b'}
             options={formataTipoVaga()}
-            label={'Tipos de vagas'}
+            label={'Tenho interesse em vagas para:'}
             name={'tipoVaga'}
             control={control}
             getOptionLabel={getOptionTipoVaga}
@@ -330,25 +325,43 @@ const ConfiguracaoForm = ({ handleError }: ConfiguracaoFormProps) => {
       <Grid container item>
         {checkBoxes.map((checkBox) => (
           <Grid item xs={12} key={checkBox.id}>
-            <FormCheckBox
-              id={'0efa3946-1d82-45df-a70b-896d787ff2b1'}
-              label={getCheckboxLabel(checkBox)}
-              name={checkBox.field}
-              control={control}
-            />
+            <Stack direction={'row'} alignItems={'center'}>
+              <FormCheckBox
+                id={'0efa3946-1d82-45df-a70b-896d787ff2b1'}
+                label={checkBox.label}
+                name={checkBox.field}
+                control={control}
+              />
+              {checkBox.field === 'aceitarTermosDePrivacidade' && (
+                <IconPoliticaPrivacidade
+                  handleRejeitaPoliticas={() => setValue('aceitarTermosDePrivacidade', false)}
+                  handleAcceptPoliticas={() => setValue('aceitarTermosDePrivacidade', true)}
+                />
+              )}
+            </Stack>
           </Grid>
         ))}
       </Grid>
       <Grid container item spacing={2} justifyContent={'space-around'} sx={{ mt: 3 }}>
         <Grid item xs={3}>
-          <Button fullWidth variant={'outlined'}>
+          <CustomButton
+            id={'0862f0c4-6d87-44bc-b34b-bfe60f8a538a'}
+            fullWidth
+            variant={'outlined'}
+            onClick={onClickCancelar}
+          >
             Cancelar
-          </Button>
+          </CustomButton>
         </Grid>
         <Grid item xs={3}>
-          <Button fullWidth variant={'contained'} type={'submit'}>
+          <CustomButton
+            id={'eba82bdd-fe39-413e-ba5e-761c38d1bfee'}
+            fullWidth
+            variant={'contained'}
+            type={'submit'}
+          >
             Confirmar
-          </Button>
+          </CustomButton>
         </Grid>
       </Grid>
     </Grid>

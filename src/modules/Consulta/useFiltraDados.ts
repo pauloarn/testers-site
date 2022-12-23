@@ -6,7 +6,6 @@ export const filtraDadosTabela = (
   filtro: Undefined<FiltroSchema>,
   dadosOriginais: DadosTabela[]
 ) => {
-  console.log(!!filtro)
   if (filtro) {
     return dadosOriginais.filter((dado) => {
       const matchesFilter: boolean[] = []

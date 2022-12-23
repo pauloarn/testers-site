@@ -5,6 +5,7 @@ import { consultaRoute } from './routes/consultaRoute'
 
 createServer({
   models,
+  logging: true,
 
   routes() {
     this.namespace = '/api'

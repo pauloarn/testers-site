@@ -5,26 +5,50 @@ import { formatDate } from '@utils/dateUtils'
 import { Undefined } from 'plc-shared/typing/genericTypes'
 import { FiltroSchema } from './useFormFiltro'
 import { FormElementReturn } from 'plc-shared/components/FormElement/useFormElement'
+import { useEffect, useState } from 'react'
+import { useSnackbar } from 'plc-shared/hooks'
+import { consultaService } from '@services/consultaService'
 
 interface ListaConsultaProps {
-  dadosTabela: DadosTabela[]
-  setFitro: (filtroData: Undefined<FiltroSchema>) => void
+  filtros: Undefined<FiltroSchema>
   formElement: FormElementReturn<FiltroSchema>
 }
-const ListaConsulta = ({ dadosTabela, setFitro, formElement }: ListaConsultaProps) => {
+const ListaConsulta = ({ filtros, formElement }: ListaConsultaProps) => {
+  const { snackError } = useSnackbar()
+  const { getAll } = consultaService()
+
+  const [dadosTabela, setDadosTabela] = useState<DadosTabela[]>([])
+
   const listaBugada = ['estado', 'cidade', 'senioridade']
+
+  const buscarDados = () => {
+    getAll(filtros).then((res) => {
+      if (res.success) {
+        setDadosTabela(res.body)
+      } else {
+        snackError('Não foi possivel ter dados')
+      }
+    })
+  }
 
   const handleReorder = (queryParam: QueryParam) => {
     const { order } = queryParam
     if (order && listaBugada.includes(order.field)) {
-      setFitro(undefined)
-      formElement.reset()
+      setDadosTabela([])
+    } else {
+      buscarDados()
     }
   }
+
+  useEffect(() => {
+    buscarDados()
+  }, [filtros])
 
   return (
     <Grid container item>
       <CustomPowerfulTable<DadosTabela>
+        id={'4750145d-d5c8-4213-a861-75f10582d0a7'}
+        data={dadosTabela}
         multiple={false}
         onChangeQuery={handleReorder}
         columns={[
@@ -62,8 +86,6 @@ const ListaConsulta = ({ dadosTabela, setFitro, formElement }: ListaConsultaProp
             render: (rowData) => formatDate(rowData.dataPublicacao)
           }
         ]}
-        id={'4750145d-d5c8-4213-a861-75f10582d0a7'}
-        data={dadosTabela}
         options={{ pageSize: 10 }}
       />
     </Grid>
