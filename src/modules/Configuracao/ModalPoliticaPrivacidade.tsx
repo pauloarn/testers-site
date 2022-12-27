@@ -2,10 +2,12 @@ import CustomDialog from 'plc-shared/components/CustomDialog'
 import { termosEPoliticaPrivacidade } from '../../termosEPoliticaPrivacidade'
 import { Grid, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { useDebounce } from 'react-use'
 
 interface ModalPoliticaPrivacidadeProps {
   isOpen: boolean
   handleClose: () => void
+
   handleConfirm: () => void
 }
 
@@ -22,7 +24,18 @@ const ModalPoliticaPrivacidade = ({
     }
   }, [isOpen])
 
+  useDebounce(
+    () => {
+      if (isOpen) {
+        setIsBlinking(!isBlinking)
+      }
+    },
+    250,
+    [isBlinking]
+  )
+
   useEffect(() => {
+    console.log(isOpen)
     if (isOpen) {
       const interval = setInterval(() => {
         setIsBlinking((prev) => !prev)
