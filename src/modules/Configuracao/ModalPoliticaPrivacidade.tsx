@@ -20,7 +20,7 @@ const ModalPoliticaPrivacidade = ({
 
   useEffect(() => {
     if (isOpen) {
-      setIsBlinking(!isOpen)
+      setIsBlinking(isOpen)
     }
   }, [isOpen])
 
