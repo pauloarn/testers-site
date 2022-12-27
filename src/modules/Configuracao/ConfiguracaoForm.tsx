@@ -360,7 +360,7 @@ const ConfiguracaoForm = ({ handleError }: ConfiguracaoFormProps) => {
             variant={'contained'}
             type={'submit'}
           >
-            Confirmar
+            Salvar
           </CustomButton>
         </Grid>
       </Grid>

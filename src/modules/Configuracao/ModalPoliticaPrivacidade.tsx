@@ -1,6 +1,7 @@
 import CustomDialog from 'plc-shared/components/CustomDialog'
 import { termosEPoliticaPrivacidade } from '../../termosEPoliticaPrivacidade'
 import { Grid, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
 
 interface ModalPoliticaPrivacidadeProps {
   isOpen: boolean
@@ -13,6 +14,23 @@ const ModalPoliticaPrivacidade = ({
   handleClose,
   handleConfirm
 }: ModalPoliticaPrivacidadeProps) => {
+  const [isBlinking, setIsBlinking] = useState(false)
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsBlinking(!isOpen)
+    }
+  }, [isOpen])
+
+  useEffect(() => {
+    if (isOpen) {
+      const interval = setInterval(() => {
+        setIsBlinking((prev) => !prev)
+      }, 250)
+      return () => clearInterval(interval)
+    }
+  }, [])
+
   const getDescription = () => {
     return (
       <Grid container sx={{ p: 1 }}>
@@ -25,7 +43,7 @@ const ModalPoliticaPrivacidade = ({
 
   return (
     <CustomDialog
-      isOpen={isOpen}
+      isOpen={isOpen && isBlinking}
       maxWidth={'lg'}
       handleClose={handleClose}
       fullWidth

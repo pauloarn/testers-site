@@ -13,7 +13,7 @@ export const FormTextPassword = <T extends FieldValues>(props: FormTextFieldProp
     setIsShowPassword((prevState) => !prevState)
   }
 
-  const icon = isShowPassword ? FaEye : FaEyeSlash
+  const icon = isShowPassword ? FaEyeSlash : FaEye
 
   const type: BaseTextFieldProps['type'] = isShowPassword ? 'text' : 'password'
 
