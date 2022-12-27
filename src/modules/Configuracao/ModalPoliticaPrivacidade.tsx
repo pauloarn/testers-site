@@ -34,16 +34,6 @@ const ModalPoliticaPrivacidade = ({
     [isBlinking]
   )
 
-  useEffect(() => {
-    console.log(isOpen)
-    if (isOpen) {
-      const interval = setInterval(() => {
-        setIsBlinking((prev) => !prev)
-      }, 250)
-      return () => clearInterval(interval)
-    }
-  }, [])
-
   const getDescription = () => {
     return (
       <Grid container sx={{ p: 1 }}>
